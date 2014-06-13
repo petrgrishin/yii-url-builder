@@ -21,3 +21,4 @@ class Yii extends YiiBase {
 Yii::createWebApplication(array(
     'basePath' => './tests',
 ));
+spl_autoload_unregister(array('YiiBase','autoload'));

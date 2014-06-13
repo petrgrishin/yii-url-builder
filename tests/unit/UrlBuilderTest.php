@@ -9,7 +9,7 @@ class UrlBuilderTest extends PHPUnit_Framework_TestCase {
 
     public function test() {
         $url = $this->createUrlBuilder('site/index')->getUrl();
-        $this->assertEquals('site/index', $url);
+        $this->assertEquals('?r=site/index', $url);
     }
 
     public function createUrlBuilder($route, $params = array()) {
@@ -17,12 +17,13 @@ class UrlBuilderTest extends PHPUnit_Framework_TestCase {
         $urlBuilder
             ->setRoute($route)
             ->setParams($params);
-
         return $urlBuilder;
     }
 
     public function getUrlManager() {
-        return $this->getApp()->getUrlManager();
+        $urlManager = $this->getApp()->getUrlManager();
+        $urlManager->setBaseUrl('');
+        return $urlManager;
     }
 
     /**
