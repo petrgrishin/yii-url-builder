@@ -69,5 +69,14 @@ class UrlBuilder {
     public function getUrl() {
         return $this->getUrlManager()->createUrl($this->route, $this->params);
     }
+
+    /**
+     * @return array
+     */
+    public function toArray() {
+        return array(
+            'url' => $this->getUrl(),
+        );
+    }
 }
  
