@@ -1,0 +1,34 @@
+{
+    "name": "petrgrishin/yii-url-builder",
+    "description": "Url builder",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0",
+        "yiisoft/yii": "*"
+    },
+    "require-dev": {
+        "league/phpunit-coverage-listener": "~1.0"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/petrgrishin/yii-url-builder.git"
+        }
+    ],
+    "authors": [
+        {
+            "name": "Petr Grishin",
+            "email": "petr.grishin@grishini.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PetrGrishin\\Url\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "files": [
+            "vendor/yiisoft/yii/framework/YiiBase.php"
+        ]
+    }
+}
