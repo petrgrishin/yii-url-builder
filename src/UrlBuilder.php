@@ -9,6 +9,8 @@ namespace PetrGrishin\Url;
 use CUrlManager;
 
 class UrlBuilder {
+    const PARAMETER_NAME_HASH = '#';
+
     /** @var CUrlManager */
     private $urlManager;
     /** @var string */
@@ -63,6 +65,27 @@ class UrlBuilder {
         return $this;
     }
 
+    public function getParam($name) {
+        if (!array_key_exists($name, $this->params)) {
+            throw new Exception\UrlBuilderException(sprintf('This param `%s` not exists'));
+        }
+        return $this->params[$name];
+    }
+
+    public function setParam($name, $value) {
+        $this->params[$name] = $value;
+        return $this;
+    }
+
+    public function getHash() {
+        return $this->getParam(self::PARAMETER_NAME_HASH);
+    }
+
+    public function setHash($value) {
+        $this->setParam(self::PARAMETER_NAME_HASH, $value);
+        return $this;
+    }
+
     /**
      * @return string
      */
@@ -75,7 +98,8 @@ class UrlBuilder {
      */
     public function toArray() {
         return array(
-            'url' => $this->getUrl(),
+            'route' => $this->route,
+            'params' => $this->params,
         );
     }
 }

@@ -7,9 +7,22 @@ use PetrGrishin\Url\UrlBuilder;
 
 class UrlBuilderTest extends PHPUnit_Framework_TestCase {
 
-    public function test() {
-        $url = $this->createUrlBuilder('site/index')->getUrl();
-        $this->assertEquals('?r=site/index', $url);
+    public function testCreateUrlBuilder() {
+        $route = 'site/index';
+        $params = array('id' => 1);
+        $urlBuilder = $this->createUrlBuilder($route, $params);
+        $this->assertEquals($route, $urlBuilder->getRoute());
+        $this->assertEquals($params, $urlBuilder->getParams());
+        $this->assertEquals('?r=site/index&id=1', $urlBuilder->getUrl());
+        $this->assertEquals(array(
+            'route' => $route,
+            'params' => $params,
+        ), $urlBuilder->toArray());
+        $urlBuilder->setParam('id', 2);
+        $this->assertEquals(2, $urlBuilder->getParam('id'));
+        $hash = 'hash';
+        $urlBuilder->setHash($hash);
+        $this->assertEquals($hash, $urlBuilder->getHash());
     }
 
     public function createUrlBuilder($route, $params = array()) {
