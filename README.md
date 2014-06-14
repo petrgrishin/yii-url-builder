@@ -60,6 +60,7 @@ class SiteController extends BaseController {
         return $this->render('index', array(
             'urls' => array(
                 'catalog' => $this->createUrlBuilder('site/catalog')->getUrl(),
+                // передана готовая строка адреса ?r=site/catalog
             ),
         ));
     }
@@ -69,6 +70,8 @@ class SiteController extends BaseController {
             'products' => Product::model()->findAll(),
             'urls' => array(
                 'product' => $this->createUrlBuilder('site/product')->setRequired(array('id')),
+                // передан объект построителя с необходимыми знаниями,
+                // требуемые параметры заполняются в представлении
             ),
         ));
     }
@@ -78,4 +81,21 @@ class SiteController extends BaseController {
     }
 }
 ```
+
+Представление вывода каталога товаров
+```php
+/** @var UrlBuilder $productUrlBuilder */
+$productUrlBuilder = $this->getParam('urls.product');
+
+foreach ($this->getParam('products') as $product) {
+    $productUrl = $productUrlBuilder
+        ->copy()
+        ->setParam('id', $product->id)
+        ->getUrl();
+        
+    print($productUrl);
+    // строка адреса ?r=site/product&id=1
+}
+```
+
 
