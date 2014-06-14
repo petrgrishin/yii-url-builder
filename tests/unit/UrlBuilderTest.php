@@ -17,12 +17,32 @@ class UrlBuilderTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(array(
             'route' => $route,
             'params' => $params,
+            'required' => array(),
         ), $urlBuilder->toArray());
         $urlBuilder->setParam('id', 2);
         $this->assertEquals(2, $urlBuilder->getParam('id'));
         $hash = 'hash';
         $urlBuilder->setHash($hash);
         $this->assertEquals($hash, $urlBuilder->getHash());
+    }
+
+    public function testRequiredParams() {
+        $route = 'site/index';
+        $params = array('id' => 1);
+        $urlBuilder = $this->createUrlBuilder($route, $params)
+            ->setRequired(array('id'));
+        $this->assertEquals('?r=site/index&id=1', $urlBuilder->getUrl());
+    }
+
+    /**
+     * @expectedException \PetrGrishin\Url\Exception\UrlBuilderException
+     */
+    public function testNotExistsRequiredParams() {
+        $route = 'site/index';
+        $params = array('id' => 1);
+        $urlBuilder = $this->createUrlBuilder($route, $params)
+            ->setRequired(array('required'));
+        $this->assertEquals('?r=site/index&id=1', $urlBuilder->getUrl());
     }
 
     public function createUrlBuilder($route, $params = array()) {
