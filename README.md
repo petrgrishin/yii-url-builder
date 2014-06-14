@@ -59,7 +59,8 @@ class SiteController extends BaseController {
     public function actionIndex() {
         return $this->render('index', array(
             'urls' => array(
-                'catalog' => $this->createUrlBuilder('site/catalog')->getUrl(),
+                'catalog' => $this->createUrlBuilder('site/catalog')
+                    ->getUrl(),
                 // передана готовая строка адреса ?r=site/catalog
             ),
         ));
@@ -69,7 +70,8 @@ class SiteController extends BaseController {
         return $this->render('about', array(
             'products' => Product::model()->findAll(),
             'urls' => array(
-                'product' => $this->createUrlBuilder('site/product')->setRequired(array('id')),
+                'product' => $this->createUrlBuilder('site/product')
+                    ->setRequired(array('id')),
                 // передан объект построителя с необходимыми знаниями,
                 // требуемые параметры заполняются в представлении
             ),
