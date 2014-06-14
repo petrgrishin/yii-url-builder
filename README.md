@@ -4,3 +4,78 @@ yii-url-builder
 [![Coverage Status](https://coveralls.io/repos/petrgrishin/yii-url-builder/badge.png?branch=master)](https://coveralls.io/r/petrgrishin/yii-url-builder?branch=master)
 
 Url builder
+
+Установка
+------------
+Добавите зависимость для вашего проекта в composer.json:
+```json
+{
+    "require": {
+        "petrgrishin/yii-url-builder": "~1.0"
+    }
+}
+```
+
+Постановка проблемы
+------------
+Необходимо определить знание об адресе контроллеров в одном слое сисстемы. Это позволит быстро и безболезненно производить поиск и рефакторинг контроллеров и их адресов.
+
+Реализовать проверку достаточности параметров построения адреса, если такое происходит в другом слое, например в представлении или клиентских скриптах.
+
+Решение
+------------
+Все адреса контроллеров должны быть определены в самих контроллерах. При необходимости недостающие параметры можно заполнить в слое представления или клиентского скрипта. Для удобной работы необходимо определить помощника - построитель адресов.
+
+Примеры использования
+------------
+#### Определение знания об адресе в контроллере
+Базовый абстрактный контроллер. Реализация метода создания обектов построителя адреса 
+```php
+class BaseController extends \CController {
+
+    public function createUrlBuilder($route, $params = array()) {
+        $urlBuilder = new UrlBuilder($this->getUrlManager());
+        $urlBuilder
+            ->setRoute($route)
+            ->setParams($params);
+        return $urlBuilder;
+    }
+
+    public function getUrlManager() {
+        $urlManager = $this->getApp()->getUrlManager();
+        return $urlManager;
+    }
+
+    public function getApp() {
+        return \Yii::app();
+    }
+}
+```
+
+Конкретный контроллер. Использование построителя адреса
+```php
+class SiteController extends BaseController {
+
+    public function actionIndex() {
+        return $this->render('index', array(
+            'urls' => array(
+                'catalog' => $this->createUrlBuilder('site/catalog')->getUrl(),
+            ),
+        ));
+    }
+    
+    public function actionCatalog() {
+        return $this->render('about', array(
+            'products' => Product::model()->findAll(),
+            'urls' => array(
+                'product' => $this->createUrlBuilder('site/product')->setRequired(array('id')),
+            ),
+        ));
+    }
+    
+    public function actionProduct($id) {
+        return $this->render('product');
+    }
+}
+```
+
