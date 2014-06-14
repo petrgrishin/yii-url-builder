@@ -96,6 +96,14 @@ foreach ($this->getParam('products') as $product) {
     print($productUrl);
     // строка адреса ?r=site/product&id=1
 }
+
+// или передать параметры построителя адреса в клиентский скрипт
+$this->setJsParams(array(
+    'urls' => array(
+        'product' => $productUrlBuilder->toArray(),
+    ),
+));
 ```
+
 
 
